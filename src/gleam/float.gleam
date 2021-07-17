@@ -1,5 +1,4 @@
 import gleam/order.{Order}
-if erlang {
   import gleam/string_builder
 
   pub type Float =
@@ -15,8 +14,14 @@ if erlang {
   ///    > parse("ABC")
   ///    Error(Nil)
   ///
+if erlang {
   pub external fn parse(String) -> Result(Float, Nil) =
     "gleam_stdlib" "parse_float"
+}
+if javascript {
+  pub external fn parse(String) -> Result(Float, Nil) =
+    "../gleam_stdlib.js" "parse_float"
+}
 
   /// Returns the string representation of the provided float.
   ///
@@ -24,11 +29,17 @@ if erlang {
   ///    > to_string(2.3)
   ///    "2.3"
   ///
+if erlang {
   pub fn to_string(f: Float) -> String {
     f
     |> string_builder.from_float
     |> string_builder.to_string
   }
+}
+if javascript {
+  pub external fn to_string(f: Float) -> String =
+    "../gleam_stdlib.js" "float_to_string"
+}
 
   /// Restricts a Float between a lower and upper bound
   ///
@@ -45,7 +56,6 @@ if erlang {
     |> max(min_bound)
   }
 
-}
   /// Compares two floats, returning an order.
   ///
   /// ## Examples
@@ -62,7 +72,6 @@ if erlang {
         }
     }
   }
-if erlang {
 
   /// Compares two floats, returning the smaller of the two.
   ///
@@ -99,8 +108,16 @@ if erlang {
   ///    > ceiling(2.3)
   ///    3.0
   ///
+if erlang {
   pub external fn ceiling(Float) -> Float =
     "math" "ceil"
+}
+if javascript {
+  pub external fn ceiling(Float) -> Float =
+    "../gleam_stdlib.js" "ceiling"
+
+}
+
 
   /// Rounds the value to the next lowest whole number as a float.
   ///
@@ -109,8 +126,15 @@ if erlang {
   ///    > floor(2.3)
   ///    2.0
   ///
+if erlang {
   pub external fn floor(Float) -> Float =
     "math" "floor"
+}
+if javascript {
+  pub external fn floor(Float) -> Float =
+    "../gleam_stdlib.js" "floor"
+
+}
 
   /// Rounds the value to the nearest whole number as an int.
   ///
@@ -122,8 +146,14 @@ if erlang {
   ///    > round(2.5)
   ///    3
   ///
+if erlang {
   pub external fn round(Float) -> Int =
     "erlang" "round"
+}
+if javascript {
+  pub external fn round(Float) -> Int =
+    "../gleam_stdlib.js" "round"
+}
 
   /// Returns the value as an int, truncating all decimal digits.
   ///
@@ -132,9 +162,14 @@ if erlang {
   ///    > truncate(2.4343434847383438)
   ///    2
   ///
+if erlang {
   pub external fn truncate(Float) -> Int =
     "erlang" "trunc"
-
+}
+if javascript {
+  pub external fn truncate(Float) -> Int =
+    "../gleam_stdlib.js" "truncate"
+}
   /// Returns the absolute value of the input as a float.
   ///
   /// ## Examples
@@ -145,8 +180,14 @@ if erlang {
   ///    > absolute_value(10.2)
   ///    10.2
   ///
+if erlang {
   pub external fn absolute_value(Float) -> Float =
     "erlang" "abs"
+}
+if javascript {
+   pub external fn absolute_value(Float) -> Int =
+    "../gleam_stdlib.js" "absolute_value"
+}
 
   /// Returns the results of the base being raised to the power of the
   /// exponent, as a float.
@@ -159,8 +200,15 @@ if erlang {
   ///    > power(8.0, 1.5)
   ///    64.0
   ///
+if erlang {
   pub external fn power(base: Float, exponent: Float) -> Float =
     "math" "pow"
+}
+if javascript {
+  pub external fn power(base: Float, exponent: Float) -> Float =
+    "../gleam_stdlib.js" "power"
+
+}
 
   /// Returns the square root of the input as a float.
   ///
@@ -229,4 +277,3 @@ if erlang {
       [x, ..rest] -> do_product(rest, x *. initial)
     }
   }
-}
