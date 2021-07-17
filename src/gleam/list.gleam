@@ -50,8 +50,11 @@
   ///    > length([1, 2])
   ///    2
   ///
+if erlang {
   pub external fn length(of: List(a)) -> Int =
     "erlang" "length"
+}
+
 
   /// Creates a new list from a given list containing the same elements but in the
   /// opposite order.
@@ -223,7 +226,7 @@
   ///    > filter_map([2, 4, 6, 1], fn(x) { Ok(x + 1) })
   ///    [3, 4, 6, 2]
   ///
-  pub fn filter_map(list: List(a), with fun: fn(a) -> Result(b, e)) -> List(b) {
+  pub fn filter_map(list: List(a), with_ fun: fn(a) -> Result(b, e)) -> List(b) {
     do_filter_map(list, fun, [])
   }
 
@@ -242,7 +245,7 @@
   ///    > map([2, 4, 6], fn(x) { x * 2 })
   ///    [4, 8, 12]
   ///
-  pub fn map(list: List(a), with fun: fn(a) -> b) -> List(b) {
+  pub fn map(list: List(a), with_ fun: fn(a) -> b) -> List(b) {
     do_map(list, fun, [])
   }
 
@@ -262,12 +265,12 @@
   pub fn map_fold(
     over list: List(a),
     from memo: memo,
-    with fun: fn(a, memo) -> #(b, memo),
+    with_ fun: fn(a, memo) -> #(b, memo),
   ) -> #(List(b), memo) {
     fold(
       over: list,
       from: #([], memo),
-      with: fn(item, acc) {
+      with_: fn(item, acc) {
         let #(items, current_memo) = acc
         let #(next_item, next_memo) = fun(item, current_memo)
         #([next_item, ..items], next_memo)
@@ -299,7 +302,7 @@
   ///    > index_map(["a", "b"], fn(i, x) { #(i, x) })
   ///    [#(0, "a"), #(1, "b")]
   ///
-  pub fn index_map(list: List(a), with fun: fn(Int, a) -> b) -> List(b) {
+  pub fn index_map(list: List(a), with_ fun: fn(Int, a) -> b) -> List(b) {
     do_index_map(list, fun, 0, [])
   }
 
@@ -344,7 +347,7 @@
   ///
   pub fn try_map(
     over list: List(a),
-    with fun: fn(a) -> Result(b, e),
+    with_ fun: fn(a) -> Result(b, e),
   ) -> Result(List(b), e) {
     do_try_map(list, fun, [])
   }
@@ -461,7 +464,7 @@
   /// [2, 3, 4, 5, 6, 7]
   /// ```
   ///
-  pub fn flat_map(over list: List(a), with fun: fn(a) -> List(b)) -> List(b) {
+  pub fn flat_map(over list: List(a), with_ fun: fn(a) -> List(b)) -> List(b) {
     map(list, fun)
     |> flatten
   }
@@ -473,7 +476,7 @@
   ///
   /// This function runs in linear time.
   ///
-  pub fn fold(over list: List(a), from initial: b, with fun: fn(a, b) -> b) -> b {
+  pub fn fold(over list: List(a), from initial: b, with_ fun: fn(a, b) -> b) -> b {
     case list {
       [] -> initial
       [x, ..rest] -> fold(rest, fun(x, initial), fun)
@@ -494,7 +497,7 @@
   pub fn fold_right(
     over list: List(a),
     from initial: b,
-    with fun: fn(a, b) -> b,
+    with_ fun: fn(a, b) -> b,
   ) -> b {
     case list {
       [] -> initial
@@ -505,13 +508,13 @@
   fn do_index_fold(
     over: List(a),
     acc: b,
-    with: fn(Int, a, b) -> b,
+    with_: fn(Int, a, b) -> b,
     index: Int,
   ) -> b {
     case over {
       [] -> acc
       [first, ..rest] ->
-        do_index_fold(rest, with(index, first, acc), with, index + 1)
+        do_index_fold(rest, with_(index, first, acc), with_, index + 1)
     }
   }
 
@@ -527,7 +530,7 @@
   pub fn index_fold(
     over over: List(a),
     from initial: b,
-    with fun: fn(Int, a, b) -> b,
+    with_ fun: fn(Int, a, b) -> b,
   ) -> b {
     do_index_fold(over, initial, fun, 0)
   }
@@ -553,7 +556,7 @@
   pub fn try_fold(
     over collection: List(a),
     from accumulator: b,
-    with fun: fn(a, b) -> Result(b, e),
+    with_ fun: fn(a, b) -> Result(b, e),
   ) -> Result(b, e) {
     case collection {
       [] -> Ok(accumulator)
@@ -591,7 +594,7 @@
   pub fn fold_until(
     over collection: List(a),
     from accumulator: b,
-    with fun: fn(a, b) -> ContinueOrStop(b),
+    with_ fun: fn(a, b) -> ContinueOrStop(b),
   ) -> b {
     case collection {
       [] -> accumulator
@@ -653,14 +656,14 @@
   ///
   pub fn find_map(
     in haystack: List(a),
-    with fun: fn(a) -> Result(b, c),
+    with_ fun: fn(a) -> Result(b, c),
   ) -> Result(b, Nil) {
     case haystack {
       [] -> Error(Nil)
       [x, ..rest] ->
         case fun(x) {
           Ok(x) -> Ok(x)
-          _ -> find_map(in: rest, with: fun)
+          _ -> find_map(in: rest, with_: fun)
         }
     }
   }
@@ -810,14 +813,14 @@
   ///    > intersperse([], 2)
   ///    []
   ///
-  pub fn intersperse(list: List(a), with elem: a) -> List(a) {
+  pub fn intersperse(list: List(a), with_ elem: a) -> List(a) {
     case list {
       [] | [_] -> list
       [x, ..rest] -> do_intersperse(rest, elem, [x])
     }
   }
 
-  /// Returns the element in the Nth position in the list, with 0 being the first
+  /// Returns the element in the Nth position in the list, with_ 0 being the first
   /// position.
   ///
   /// Error(Nil) is returned if the list is not long enough for the given index.
@@ -1382,7 +1385,7 @@
   /// Returns a list of chunks containing `count` elements each.
   ///
   /// If the last chunk does not have `count` elements, it is instead
-  /// a partial chunk, with less than `count` elements.
+  /// a partial chunk, with_ less than `count` elements.
   ///
   /// For any `count` less than 1 this function behaves as if it was set to 1.
   ///
@@ -1413,7 +1416,7 @@
   ///    > [1, 2, 3, 4, 5] |> reduce(fn(x, y) { x + y })
   ///    Ok(15)
   ///
-  pub fn reduce(over list: List(a), with fun: fn(a, a) -> a) -> Result(a, Nil) {
+  pub fn reduce(over list: List(a), with_ fun: fn(a, a) -> a) -> Result(a, Nil) {
     case list {
       [] -> Error(Nil)
       [head, ..tail] ->
@@ -1447,7 +1450,7 @@
   pub fn scan(
     over list: List(a),
     from initial: b,
-    with fun: fn(a, b) -> b,
+    with_ fun: fn(a, b) -> b,
   ) -> List(b) {
     do_scan(list, initial, [], fun)
   }
@@ -1493,7 +1496,7 @@
           [] -> []
           [x, ..xs] -> {
             let first_combinations =
-              map(combinations(xs, n - 1), with: fn(com) { [x, ..com] })
+              map(combinations(xs, n - 1), with_: fn(com) { [x, ..com] })
               |> reverse
             fold(
               first_combinations,
@@ -1509,7 +1512,7 @@
     case items {
       [] -> []
       [x, ..xs] -> {
-        let first_combinations = map(xs, with: fn(other) { #(x, other) })
+        let first_combinations = map(xs, with_: fn(other) { #(x, other) })
         [first_combinations, ..do_combination_pairs(xs)]
       }
     }

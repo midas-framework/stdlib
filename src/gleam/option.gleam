@@ -1,4 +1,3 @@
-if erlang {
   import gleam/list
 
   /// Option represents a value that may be present or not. Some means the value is
@@ -30,7 +29,7 @@ if erlang {
     list.fold_right(
       list,
       from: Some([]),
-      with: fn(item, acc) {
+      with_: fn(item, acc) {
         case acc, item {
           Some(values), Some(value) -> Some([value, ..values])
           _, _ -> None
@@ -224,4 +223,3 @@ if erlang {
   pub fn values(options: List(Option(a))) -> List(a) {
     list.filter_map(options, fn(op) { to_result(op, "") })
   }
-}

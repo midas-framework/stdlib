@@ -101,7 +101,7 @@
 
   pub fn map_fold_test() {
     [1, 2, 3, 4]
-    |> list.map_fold(from: 0, with: fn(i, acc) { #(i * 2, acc + i) })
+    |> list.map_fold(from: 0, with_: fn(i, acc) { #(i * 2, acc + i) })
     |> should.equal(#([2, 4, 6, 8], 10))
   }
 
@@ -178,7 +178,7 @@
 
   pub fn fold_right_test() {
     [1, 2, 3]
-    |> list.fold_right(from: [], with: fn(x, acc) { [x, ..acc] })
+    |> list.fold_right(from: [], with_: fn(x, acc) { [x, ..acc] })
     |> should.equal([1, 2, 3])
   }
 
@@ -192,7 +192,7 @@
     [1, 2, 3, 4]
     |> list.fold_until(
       from: 0,
-      with: fn(n, acc) {
+      with_: fn(n, acc) {
         case n < 4 {
           True -> list.Continue(acc + n)
           False -> list.Stop(acc)
@@ -237,15 +237,15 @@
     }
 
     [1, 2, 3]
-    |> list.find_map(with: f)
+    |> list.find_map(with_: f)
     |> should.equal(Ok(4))
 
     [1, 3, 2]
-    |> list.find_map(with: f)
+    |> list.find_map(with_: f)
     |> should.equal(Ok(4))
 
     [1, 3]
-    |> list.find_map(with: f)
+    |> list.find_map(with_: f)
     |> should.equal(Error(Nil))
   }
 
@@ -626,11 +626,11 @@ if erlang {
 
   pub fn reduce_test() {
     []
-    |> list.reduce(with: fn(x, y) { x + y })
+    |> list.reduce(with_: fn(x, y) { x + y })
     |> should.equal(Error(Nil))
 
     [1, 2, 3, 4, 5]
-    |> list.reduce(with: fn(x, y) { x + y })
+    |> list.reduce(with_: fn(x, y) { x + y })
     |> should.equal(Ok(15))
   }
 
@@ -638,17 +638,17 @@ if erlang {
 // TODO requires string.append
   pub fn scan_test() {
     []
-    |> list.scan(from: 0, with: fn(i, acc) { i + acc })
+    |> list.scan(from: 0, with_: fn(i, acc) { i + acc })
     |> should.equal([])
 
     [1, 2, 3, 4]
-    |> list.scan(from: 0, with: fn(i, acc) { 2 * i + acc })
+    |> list.scan(from: 0, with_: fn(i, acc) { 2 * i + acc })
     |> should.equal([2, 6, 12, 20])
 
     [1, 2, 3, 4]
     |> list.scan(
       from: "",
-      with: fn(i, acc) {
+      with_: fn(i, acc) {
         case int.is_even(i) {
           True -> "Even"
           False -> "Odd"

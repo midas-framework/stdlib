@@ -1,4 +1,3 @@
-if erlang {
   import gleam/should
   import gleam/option.{None, Some}
 
@@ -114,4 +113,3 @@ if erlang {
     option.values([Some(1), None, Some(3)])
     |> should.equal([1, 3])
   }
-}

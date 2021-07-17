@@ -1,5 +1,4 @@
 if erlang {
-  import gleam/io
   import gleam/option.{None, Some}
   import gleam/regex.{CompileError, Match, Options}
   import gleam/should
