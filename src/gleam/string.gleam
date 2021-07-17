@@ -311,6 +311,13 @@ if erlang {
     |> string_builder.append(second)
     |> string_builder.to_string
   }
+}
+if javascript {
+  pub external fn append(String, String) -> String =
+    "../gleam_stdlib.js" "append"
+}
+if erlang {
+
 
   /// Creates a new string by joining many strings together.
   ///

@@ -54,3 +54,7 @@ export function absolute_value(float) {
 export function power(x, y) {
     return Math.pow(x, y)
 }
+
+export function append(first, second) {
+    return first.concat(second)
+}

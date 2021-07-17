@@ -1,8 +1,8 @@
-if erlang {
   import gleam/string
   import gleam/should
   import gleam/order
 
+if erlang {
   pub fn length_test() {
     string.length("ß↑e̊")
     |> should.equal(3)
@@ -59,12 +59,14 @@ if erlang {
     |> should.equal("Gleam++Erlang++Elixir")
   }
 
+}
   pub fn append_test() {
     "Test"
     |> string.append(" Me")
     |> should.equal("Test Me")
   }
 
+if erlang{
   pub fn compare_test() {
     string.compare("", "")
     |> should.equal(order.Eq)
